@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>공지사항 - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row" style="height:100%"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+					
+					<!-- Page Heading -->
+					<div class="mb-4" style="margin-top: 80px">
+						<ul class="nav nav-tabs">
+ 							<li class="nav-item" id="linkToProfile"></li>
+						    <li class="nav-item" id="linkToActivity"></li>
+						</ul>		
+					</div><!-- page Heading End -->
+
+					<!-- 1/4 (user)-->
+					<div>
+						<div class="row text-dark">
+							<div class="col-md-2 text-center" id="img">
+								<img src="/img/profile.svg" width="100px">
+							</div>
+							<div class="col-md-6 py-3" id="introduce"></div>
+							<div class="col-md-4" id="information"></div>
+						</div>
+					</div>
+					<div class="row" >
+						<div class="col-md-2">
+							<hr>
+							<Label class="text-dark">Community</Label>
+						</div>
+						<div class="col-md-10">
+							<hr class="mb-2">
+							<div class="text-center">
+								<div><p class="text-dark text-left font-weight-bold NotoSans mb-0"><span class="text-lg">태그</span><small class="ml-1" id="tagCount"></small></p></div>
+								<div id="tag" class="row px-2 py-0" style="text-align: right;"></div>
+							</div>
+							<hr>
+							<div class="d-flex justify-content-between">
+								<div>
+									<label class="text-dark text-left font-weight-bold NotoSans mb-0 mt-1" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
+								</div>
+								<div>
+									 <div class="btn-group mb-2">
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn">내 질문</button>
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionAnswerBtn">내 답글</button> 
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn">내 댓글</button> 		
+									 </div>
+								</div>
+
+							</div>
+							
+						 </div>
+					</div>
+					<div class="row">
+						<div class="col-md-2"></div>
+						<div class="col-md-10">
+							<table class="table table-hover">
+								<thead align="center" id="headlist">
+									
+								</thead>
+								<!-- 내 질문/답변/댓글 list 출력 -->
+								<tbody id="list"></tbody>
+							</table>
+						</div>
+					</div>
+							
+			</div>			
+		</div>
+	</div> 
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+	
+</body>
+<script type="text/javascript">
+
+$("#linkToProfile").append('<a class="nav-link active hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
+$("#linkToActivity").append('<a class="nav-link  hov-p" href="/userOneActive?userId='+getParam("userId")+'">활동</a>');
+console.log(getParam("userId"));
+$("#userId").val(getParam("userId"));
+
+$(document).ready(function() {
+	
+	var currentPage  = 1;
+	var rowPerPage = 10;
+	
+	//프로필 출력
+	$.ajax({
+		url :"/rest/profile",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+		
+			$(json).each(function(index, item){
+			
+			let	introduce = "<h1 class=' h2 font-weight-bold mb-1'>"+item.userName+"</h1>";
+				introduce += "<div>"+item.userId+"</div>";
+				$("#introduce").append(introduce);
+			
+			let information = "<div>🚩"+item.region.regionName+"</div>";
+				information += "<div>💓"+item.userBirthdate+"</div>";
+				information += "<div>⏱"+item.userCreatetime+"</div>";
+				information += "<div>🏆"+item.rank.rankName+"</div>";
+				$("#information").append(information);
+				
+			});
+		}
+	});
+	
+	//태그 리스트 출력
+	$.ajax({
+		url : "/rest/userTagList",
+		method : "post",
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log(json);
+			let tagList;
+			$(json.list).each(function(index, item){
+				tagList = "<div class='p-2'>";
+				tagList += "<div class='p-1'><a href='#' class='btn btn-sm hov-p text-primary p-1'>#"+item.tagName+"</a> x ";
+				tagList += "<small class='text-dark text-right'>"+item.count+"</small></div></div>";
+				$("#tag").append(tagList);
+			})
+		}
+	})
+	
+	//사용한 태그 전체 수
+	$.ajax({
+		url : "/rest/userTagCount",
+		method : "post",
+		data :{"userId": getParam("userId")},
+		success : function(json){
+			$("#tagCount").append(json);
+		}
+	})
+	
+	//클릭하지 않아도 기본적으로 내 질문 리스트 출력.
+	$.ajax({
+		url :"/rest/profileQuestionBoard",
+		method : "post",
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log(json);
+			$("#list").empty();
+			$("#headlist").empty();
+			let boardHead  = "<tr><th>질문 번호</th>";
+				boardHead += "<th>질문 제목</th>";
+				boardHead += "<th>질문 날짜</th></tr>";
+				$("#headlist").append(boardHead);
+			$(json.list).each(function(index, item){
+				
+			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+				board += "<td>"+item.questionDatetime+"</td></tr>";
+		
+				$("#list").append(board);
+			});
+		}
+	});
+	
+	//내 질문버튼 클릭시 리스트 출력.
+	$("#questionBoardBtn").click(function(){
+		$.ajax({
+			url :"/rest/profileQuestionBoard",
+			method : "post",
+			data : {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
+			success : function(json){
+				console.log("question json :"+ json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let boardHead  = "<tr><th>질문 번호</th>";
+					boardHead += "<th>질문 제목</th>";
+					boardHead += "<th>질문 날짜</th></tr>";
+					$("#headlist").append(boardHead);
+				$(json.list).each(function(index, item){
+					
+				let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+					board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+					board += "<td>"+item.questionDatetime+"</td></tr>";
+					
+					$("#list").append(board);
+				});
+			}
+		});
+	})
+	
+	//클릭시 내 답글 리스트 출력
+	$("#questionAnswerBtn").click(function(){
+		$.ajax({
+			url : "/rest/questionAnswer",
+			method : "post",
+			data :  {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
+			success : function(json){
+				console.log("answer json : "+json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let answerHead = "<tr><th>답변 번호</th>";
+					answerHead += "<th>답변 내용</th>";
+					answerHead += "<th>답변 날짜</th></tr>";
+					$("#headlist").append(answerHead);
+
+				$(json.list).each(function(index,item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#list").append(answer);
+				})
+			}
+		})
+	})
+	
+	
+	//클릭시 내 댓글 리스트 출력.
+	$("#questionCommentBtn").click(function(){
+		$.ajax({
+			url :"/rest/profileQuestionComment",
+			method : "post",
+			data : {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
+			success : function(json){
+				console.log("comment json:"+json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let commentHead  = "<tr><th>댓글 번호</th>";
+					commentHead += "<th>댓글 내용</th>";
+					commentHead += "<th>댓글 날짜</th></tr>";
+					$("#headlist").append(commentHead);
+					
+				$(json.list).each(function(index, item){
+				
+					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionCommentId+"</td>";
+						comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+						comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+					$("#list").append(comment);
+				});
+			}
+		});
+	})
+	
+	//유저 질문 수 
+	$.ajax({
+		url : "/rest/QuestionCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+			$(json).each(function(index, item){
+				$("count").append(item);
+			})
+		} 
+	
+	})
+	
+	//active 버튼 클릭시
+	$("#active").click(function(){
+		$.ajax({
+			url : "/userOneActive",
+			method : "get",
+			data :  {"userId" : getParam("userId")},
+			success :function(){
+				console.log("성공");
+			}
+		})
+	})
+	
+	//해당 유저 질문 추천 받은 수 
+	$.ajax({
+		url : "/rest/userVote",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("vote"+json);
+			$("#introduce").append("<h1 class='h6 mt-3'>받은 추천👍"+json+"</h1>");
+		}
+	})
+	
+});
+</script>
+</html>

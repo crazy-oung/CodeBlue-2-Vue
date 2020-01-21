@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>유저 활동 - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row" style="height:100%"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+					
+					<!-- Page Heading -->
+					<div class="mb-1" style="margin-top: 80px">
+						<ul class="nav nav-tabs">
+						   	<li class="nav-item" id="linkToProfile"></li>
+						    <li class="nav-item" id="linkToActivity"></li>
+						</ul>	
+						<div id="user" class="text-right font-weight-bold h3"></div>
+					</div>
+					<!-- page Heading End -->
+
+					<!-- 유저 통계 -->
+					<div class="row">
+						<div class="col-sm-6 ">
+							<div class="card mb-4 p-4 bg-gray-100">
+								<div class="row">
+									<div class="col-sm-4">
+										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 질문 수</h1>
+									</div>
+									<div class="col-sm-8">
+										<div style="height: 20vh">
+											<canvas id="monthlyQuestionCountLineChart"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>		
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="card mb-4 p-4 alert-primary">
+								<div class="row">
+									<div class="col-sm-4" >
+										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 답변 수</h1>
+									</div>
+									<div class="col-sm-8" >
+										<div style="height: 20vh">
+											<canvas id="monthlyCommentCountLineChart"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>		
+						</div>
+					</div>	
+
+					<!-- 선택리스트 -->
+					<div class="mb-4" >
+						<ul class="nav nav-tabs">
+						    <li class="nav-item">
+						     	 <a class="nav-link active hov-p" href="#" onclick="reset()" id="summaryBtn">요약</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('answerBtn')" id="answerBtn">답변</a>
+						    </li>
+						    <li class="nav-item">
+						    	  <a class="nav-link hov-p " href="#" onclick="activeCategory('questionBtn')" id="questionBtn">질문</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('commentBtn')" id="commentBtn">댓글</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('tagBtn')" id="tagBtn">태그</a>
+						    </li>
+						</ul>		
+					</div>
+					
+					<!-- 질문버튼 클릭시 사용됨 -->
+					<table class="table table-hover">
+						<tbody id="boardList"></tbody>
+					</table>
+					
+					<!-- 페이징 버튼 -->
+					<p>
+						<button type="button" class="btn btn-primary" id="QuestionPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="QuestionNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="CommentPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="CommentNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="AnswerPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="AnswerNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="TagPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="TagNextBtn">다음</button>
+					</p>
+				
+					<!--기본페이지 및 요약버튼 클릭시 출력.-->
+					<div id="contentBoard" >
+					
+						<!-- 2/4 -->
+						<div class="row">
+							<div class="col-md-6">
+								<label>질문</label><label id="questionCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="questionList"></tbody>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<label>답글</label><label id="answerCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="answerList"></tbody>
+								</table>
+							</div>
+						</div>
+						<hr>
+						
+						<!-- 3/4 -->
+						<div class="row">
+							<div class="col-md-6">
+								<label>댓글</label><label id="commentCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="commentList"></tbody>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<label>태그</label><label id="tagCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 태그 list 출력 -->
+										<tbody id="tag"></tbody>
+								</table>
+							</div>
+						</div>
+						
+					</div>
+			</div>
+		</div> 
+	</div>
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+	
+</body>
+<script type="text/javascript">
+var currentPage  = 1;
+var rowPerPage = 10;
+var lastPage = 0;
+
+function activeCategory(item){
+	$("#answerBtn").removeClass("active");
+	$("#summaryBtn").removeClass("active");
+	$("#questionBtn").removeClass("active");
+	$("#commentBtn").removeClass("active");
+	$("#tagBtn").removeClass("active");
+	console.log("#"+item);
+	$("#"+item).addClass("active");
+}
+
+function reset(){
+	buttonHide();
+	console.log("요약...")
+	activeCategory("summaryBtn");
+	rowPerPage = 6;
+	
+	$("#boardList").empty();
+	
+	$("#contentBoard").fadeIn(500);
+	//내 질문 리스트 출력.
+	$.ajax({
+		url :"/rest/profileQuestionBoard",
+		method : "post",
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log(json);
+			$("#questionList").empty();
+			
+			$(json.list).each(function(index, item){
+				
+			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+				board += "<td>"+item.questionDatetime+"</td></tr>";
+		
+				$("#questionList").append(board);
+			});
+		}
+	});
+	
+	// 댓글 리스트 출력.
+	$.ajax({
+		url :"/rest/profileQuestionComment",
+		method : "post",
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log(json);
+			$("#commentList").empty();
+			
+			$(json.list).each(function(index, item){
+			
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>C</span>"+item.questionBoard.questionId+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+				$("#commentList").append(comment);
+			});
+		}
+	});
+	
+	// 답글 리스트 출력.
+	$.ajax({
+		url : "/rest/questionAnswer",
+		method : "post",
+		data :  {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log("answer json : "+json);
+			$("#answerList").empty();
+
+			$(json.list).each(function(index,item){
+				let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
+					answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+					answer += "<td>"+item.answerDatetime+"</td></tr>";
+				$("#answerList").append(answer);
+			})
+		}
+	})
+	
+	//태그 리스트 출력
+	$.ajax({
+		url : "/rest/userTagList",
+		method : "post",
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
+		success : function(json){
+			console.log(json);
+			let tagList;
+			$(json.list).each(function(index, item){
+				tagList  = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td></tr>";
+				$("#tag").append(tagList);
+			})
+		}
+	})
+	
+	//사용한 태그 전체 수
+	$.ajax({
+		url : "/rest/userTagCount",
+		method : "post",
+		data :{"userId": getParam("userId")},
+		success : function(json){
+			$("#tagCount").empty();
+			$("#tagCount").append(json);
+		}
+	})
+	
+	//답변 수
+	$.ajax({
+		url : "/rest/answerCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("answer Count", json);
+			$("#answerCount").empty();
+			$("#answerCount").append(json);
+		}
+	})
+	
+	//댓글 수 
+	$.ajax({
+		url : "/rest/CommentCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("commentCount:",json);
+			$("#commentCount").empty();
+			$("#commentCount").append(json);
+		} 
+	
+	})
+	
+	//질문 수
+	$.ajax({
+		url : "/rest/QuestionCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("questionCount:",json);
+			$("#questionCount").empty();
+			$("#questionCount").append(json);
+		} 
+	})
+}
+
+//버튼 숨김.
+function buttonHide(){
+	$("#QuestionNextBtn").hide()
+	$("#QuestionPrevBtn").hide()
+	$("#CommentNextBtn").hide()
+	$("#CommentPrevBtn").hide()
+	$("#AnswerNextBtn").hide()
+	$("#AnswerPrevBtn").hide()
+	$("#TagNextBtn").hide()
+	$("#TagPrevBtn").hide()
+}
+
+//질문 페이징 버튼
+function questionPaging(){
+	if(currentPage <= 1){
+		$("#QuestionNextBtn").show()
+		$("#QuestionPrevBtn").hide()	
+	}else if(currentPage >= lastPage){
+		$("#QuestionNextBtn").hide()
+		$("#QuestionPrevBtn").show()	
+	}else{
+		$("#QuestionNextBtn").show()
+		$("#QuestionPrevBtn").show()
+	}
+}
+
+//답글 페이징 버튼
+function answerPaging(){
+	if(currentPage <= 1){
+		$("#AnswerNextBtn").show()
+		$("#AnswerPrevBtn").hide()
+	}else if(currentPage >= lastPage){
+		$("#AnswerNextBtn").hide()
+		$("#AnswerPrevBtn").show()
+	}else{
+		$("#AnswerNextBtn").show()
+		$("#AnswerPrevBtn").show()
+	}
+}
+
+//댓글 페이징 버튼
+function commentPaging(){
+	if(currentPage <= 1){
+		$("#CommentNextBtn").show()
+		$("#CommentPrevBtn").hide()
+	}else if(currentPage >= lastPage){	
+		$("#CommentNextBtn").hide()
+		$("#CommentPrevBtn").show()
+	}else{
+		$("#CommentNextBtn").show()
+		$("#CommentPrevBtn").show()
+	}
+}
+
+//태그 페이징 버튼
+function tagPaging(){
+	if(currentPage <= 1){
+		$("#TagNextBtn").show()
+		$("#TagPrevBtn").hide()
+	}else if(currentPage >= lastPage){	
+		$("#TagNextBtn").hide()
+		$("#TagPrevBtn").show()
+	}else{
+		$("#TagNextBtn").show()
+		$("#TagPrevBtn").show()
+	}
+}
+function commentItem(commentNum){
+	$.ajax({
+		url :"/rest/questionCommentPaging",
+		method : "post",
+		data : {"currentPage" : currentPage,
+				"rowPerPage": rowPerPage,
+				"userId" : getParam("userId")},
+		success : function(json){
+			$("#CommentPrevBtn").show()
+			$("#CommentNextBtn").show()
+			commentPaging()
+			console.log(json);
+			$(json.list).each(function(index,item){
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>C</span>"+item.questionBoard.questionId+"</td>";
+				comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+				comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+				$("#boardList").append(comment);
+			})
+		}
+	})
+}
+
+$(document).ready(function() {
+	//첫화면 버튼 숨김
+	buttonHide()
+	
+	$("#linkToProfile").append('<a class="nav-link hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
+	console.log(getParam("userId"));
+	$("#linkToActivity").append('<a class="nav-link active hov-p" href="/userOneActive?userId='+getParam("userId")+'">활동</a>');
+	$("#userId").val(getParam("userId"));
+	
+	//이름출력.
+	$.ajax({
+		url :"/rest/profile",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+		
+			$(json).each(function(index, item){
+				let	introduce = "<a class='nav-link py-1 px-0' href='/userOne?userId="+item.userId+"'>"+item.userName+"</a>";
+				$("#user").append(introduce);
+			});
+		}
+	});
+	
+	// 요약 출력
+	reset();
+
+	//댓글 버튼
+	$("#commentBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		 commentItem();
+	})
+	
+	//답변버튼
+	$("#answerBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				answerPaging()
+				console.log(json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
+	})
+	
+	//질문버튼
+	$("#questionBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				questionPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let tag = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						tag += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						tag += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(tag);
+				})
+			}
+		})
+	})
+	
+	//질문(다음페이지)
+	$("#QuestionNextBtn").click(function(){
+		console.log("currentPage"+currentPage);
+
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				questionPaging();
+				console.log("question"+json);
+				console.log("lastPage",lastPage)
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						question += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//질문(이전페이지)
+	$("#QuestionPrevBtn").click(function(){
+		console.log("currentPage"+currentPage);
+
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				lastPage = json.lastPage;
+				currentPage = json.currentPage;
+				questionPaging();
+				console.log("question"+json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						question += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//답변(다음페이지)
+	$("#AnswerNextBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				answerPaging();
+				console.log("answer"+json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
+	})
+	
+	//답변(이전페이지)
+	$("#AnswerPrevBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				answerPaging();
+				console.log("answer"+json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
+	})
+	
+	//댓글(다음페이지)
+	$("#CommentNextBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		 commentItem(++currentPage)
+	})
+	
+	//댓글(이전페이지)
+	$("#CommentPrevBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		 commentItem(--currentPage)
+	})
+	
+	//태그버튼 
+	$("#tagBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+
+	//태그 다음 버튼 
+	$("#TagNextBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//태그 이전 버튼 
+	$("#TagPrevBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+
+	//해당 유저 월별 질문 차트
+	var lineQuestionctx = document.getElementById("monthlyQuestionCountLineChart"); 
+		var lineQuestionCount = [0,0,0,0,0,0,0,0,0,0,0,0];
+	
+		$.ajax({
+			url:"/rest/questionChart",
+			method:"post",
+			data : {"userId" : getParam("userId")},
+			success : function(json){
+				console.log("chart"+json);			
+				
+				$(json).each(function(index, item){
+					lineQuestionCount[item.questionMonth-1] = item.questionCount;
+				})
+				console.log(lineQuestionCount);
+				yearlyQuestionCountChart.update();
+			},
+		});
+	
+		var yearlyQuestionCountChart = new Chart(lineQuestionctx, {
+			type: 'line',
+			  data: {
+			    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			    datasets: [{
+			      label: "질문수",
+			      lineTension: 0.3,
+			      backgroundColor: "rgba(78, 115, 223, 0.05)",
+			      borderColor: "rgba(78, 115, 223, 1)",
+			      pointRadius: 3,
+			      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+			      pointBorderColor: "rgba(78, 115, 223, 1)",
+			      pointHoverRadius: 3,
+			      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+			      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+			      pointHitRadius: 10,
+			      pointBorderWidth: 2,
+			      data: lineQuestionCount,
+			    }],
+			  },
+			  options: {
+			    maintainAspectRatio: false,
+			    layout: {
+			      padding: {
+			        left: 10,
+			        right: 25,
+			        top: 25,
+			        bottom: 0
+			      }
+			    },
+			    scales: {
+			      xAxes: [{
+			        time: {
+			          unit: 'date'
+			        },
+			        gridLines: {
+			          display: false,
+			          drawBorder: false
+			        },
+			        ticks: {
+			          maxTicksLimit: 7
+			        }
+			      }],
+			      yAxes: [{
+			        ticks: {
+			          maxTicksLimit: 5,
+			          padding: 10,
+			          beginAtZero: true
+			        },
+			        gridLines: {
+			          color: "rgb(234, 236, 244)",
+			          zeroLineColor: "rgb(234, 236, 244)",
+			          drawBorder: false,
+			          borderDash: [2],
+			          zeroLineBorderDash: [2]
+			        }
+			      }],
+			    },
+			    legend: {
+			      display: false
+			    },
+			    tooltips: {
+			      backgroundColor: "rgb(255,255,255)",
+			      bodyFontColor: "#858796",
+			      titleMarginBottom: 10,
+			      titleFontColor: '#6e707e',
+			      titleFontSize: 14,
+			      borderColor: '#dddfeb',
+			      borderWidth: 1,
+			      xPadding: 15,
+			      yPadding: 15,
+			      displayColors: false,
+			      intersect: false,
+			      mode: 'index',
+			      caretPadding: 10,
+			      callbacks: {
+			        label: function(tooltipItem, chart) {
+			          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+			          return datasetLabel + ': ' + tooltipItem.yLabel+"개";
+			        }
+			      }
+			    },
+			  }
+		});	
+
+		//해당 유저 월별 댓글 차트
+		var lineAnswerctx = document.getElementById("monthlyCommentCountLineChart"); 
+			var lineAnswerCount = [0,0,0,0,0,0,0,0,0,0,0,0];
+		
+			$.ajax({
+				url:"/rest/answerChart",
+				method:"post",
+				data : {"userId" : getParam("userId")},
+				success : function(json){
+					console.log("chart"+json);			
+					
+					$(json).each(function(index, item){
+						lineAnswerCount[item.questionMonth-1] = item.questionCount;
+					})
+					console.log(lineAnswerCount);
+					yearlyAnswerCountChart.update();
+				},
+			});
+		
+			var yearlyAnswerCountChart = new Chart(lineAnswerctx, {
+				type: 'line',
+				  data: {
+				    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				    datasets: [{
+				      label: "댓글수",
+				      lineTension: 0.3,
+				      backgroundColor: "rgba(78, 115, 223, 0.05)",
+				      borderColor: "rgba(78, 115, 223, 1)",
+				      pointRadius: 3,
+				      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+				      pointBorderColor: "rgba(78, 115, 223, 1)",
+				      pointHoverRadius: 3,
+				      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+				      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+				      pointHitRadius: 10,
+				      pointBorderWidth: 2,
+				      data: lineAnswerCount,
+				    }],
+				  },
+				  options: {
+				    maintainAspectRatio: false,
+				    layout: {
+				      padding: {
+				        left: 10,
+				        right: 25,
+				        top: 25,
+				        bottom: 0
+				      }
+				    },
+				    scales: {
+				      xAxes: [{
+				        time: {
+				          unit: 'date'
+				        },
+				        gridLines: {
+				          display: false,
+				          drawBorder: false
+				        },
+				        ticks: {
+				          maxTicksLimit: 7
+				        }
+				      }],
+				      yAxes: [{
+				        ticks: {
+				          maxTicksLimit: 5,
+				          padding: 10,
+				          beginAtZero: true
+				        },
+				        gridLines: {
+				          color: "rgb(234, 236, 244)",
+				          zeroLineColor: "rgb(234, 236, 244)",
+				          drawBorder: false,
+				          borderDash: [2],
+				          zeroLineBorderDash: [2]
+				        }
+				      }],
+				    },
+				    legend: {
+				      display: false
+				    },
+				    tooltips: {
+				      backgroundColor: "rgb(255,255,255)",
+				      bodyFontColor: "#858796",
+				      titleMarginBottom: 10,
+				      titleFontColor: '#6e707e',
+				      titleFontSize: 14,
+				      borderColor: '#dddfeb',
+				      borderWidth: 1,
+				      xPadding: 15,
+				      yPadding: 15,
+				      displayColors: false,
+				      intersect: false,
+				      mode: 'index',
+				      caretPadding: 10,
+				      callbacks: {
+				        label: function(tooltipItem, chart) {
+				          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+				          return datasetLabel + ': ' + tooltipItem.yLabel+"개";
+				        }
+				      }
+				    },
+				  }
+			});	
+});
+</script>
+</html>

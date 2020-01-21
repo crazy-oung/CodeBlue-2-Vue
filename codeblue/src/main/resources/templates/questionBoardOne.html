@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>질문 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css"
+	rel="stylesheet">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+	<div class='content'>
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row">
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
+					<div id="leftSideBar"></div>
+				</div>
+				<!-- Side Bar End -->
+
+				<!-- Page Content -->
+				<div class="col-sm-11 pl-4">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between"
+						style="margin-top: 80px">
+						<h1 class="text-gray-800 font-weight-bold h3" id="title"></h1>
+					</div>
+					<!-- page Heading End -->
+					<small id="datetime">등록일 </small>
+					<hr>
+					<div class="row">
+						<div class='col-sm-9' style="width: 100%">
+							<div id="tableBody" class='text-dark table-borderless text-lg' style="word-break:break-all;"></div><!-- 질문 내용 출력  -->
+							<div class="mt-4" id="tagList" style="word-break:break-all;"></div>
+							<div class="d-flex justify-content-between mt-1">
+								<div>
+									<a id="commentBtn" class="btn hov-p px-1"><i class='far fa-comment-dots mx-1'></i></a>
+									<a id="reportBtn" class='px-1 text-danger btn hov-p'>신고</a>
+									<a id="goodBtn" class="px-1 text-primary btn hov-p">추천</a>
+								</div>
+								<div class="pr-2 row">
+									<div id="modify"></div>
+									<div class="card bg-gray-200 text-dark d-flex p-1" id="questionUserName"></div>
+								</div>
+							</div>
+
+							<div class="card p-3 bg-gray-100 border-0"style="display: none;" id="questionComment">
+								<form method="post">
+									<div>
+										<textarea id="questionCommentContent" class="form-control form-control-sm" maxlength="1000"
+											placeholder="개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."></textarea>
+									</div>
+									<div>
+										<div class="text-right m-1">
+											<button type="button" id="questionCommentBtn" class="btn btn-sm btn-primary text-right px-3">등록</button>
+										</div>
+									</div>
+								</form>
+								<div id="questionCommentList">
+								</div>
+							</div>
+							<h1 class="h5 text-dark mt-3 mb-0 font-weight-bold" id="answerCount"></h1>
+							<hr class="mt-2"> 
+							<div id="answerList"  class='table table-hover table-sm'>
+								<table id="bodyTable" class="text-dark"></table>
+							</div>
+							
+							<!-- 답변 입력란 -->
+							<p class='text-gray-900 small text-right mb-1 '>도움을 줄 수 있는 사람을 알고 계신가요? 질문에 링크를 공유해주세요!</p>
+							<div id="summernote" class="mb-3"></div>
+							<button class='btn btn-sm btn-primary m-1 px-4' id="addAnswerBtn">답변게시</button>
+							
+						</div>
+						
+						<!-- Page rigth side bar -->
+						<div class="col-sm-3 mb-4" id="rightSideBar"></div>
+						<!-- rigth side bar end -->
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<div id="footer"></div>
+		<!-- End of Footer -->
+
+	</div>
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- summer note scripts -->
+	<script src="js/summernote/summernote-bs4.min.js"></script>
+	<script src="js/summernote/summernote-ko-KR.js"></script>
+	<script src="js/summernote/summernote.min.js"></script>
+
+	<!-- CodeBlue scripts -->
+	<script src="js/codeBlueUser.js"></script>
+</body>
+<script>
+
+//현재 로그인 정보 가져오기
+var userId = undefined;
+$.ajax({
+	url : "/rest/getLoginUser",
+	method : "get",
+	async : "false",
+	success : function(json){
+		console.log(json);
+		userId = json.userId;
+		console.log("userId: ",userId);
+	}
+});
+$("#modifyBtn").hide();
+
+//질문 답변 입력창
+$('#summernote').summernote({
+	  toolbar: [
+			['style', ['style']],
+			['style', ['bold', 'italic', 'underline', 'clear']],
+			['font', ['strikethrough', 'superscript', 'subscript']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['height', ['height']],
+			['fontsize', ['8','10','10','10','10']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video']]
+		],
+	lang : 'ko-KR',
+	placeholder: '내용을 입력해주세요',
+	tabsize: 4,
+	height: 150
+});
+
+//질문 상세 정보 가져오기
+$.ajax({
+	url : "/rest/questionBoardOne",
+	method : "post",
+	data : {"questionId" : getParam("questionId")},
+	success: function(json) {
+		console.log(json);
+		$("#title").append(json.questionTitle);
+		$("#datetime").append(json.questionDatetime);
+		$("#commentBtn").append(json.commentCount);
+		$("#tableBody").append(json.questionContent);
+		$("#questionUserName").append('<a href="/userOne?userId='+json.user.userId+'">'+json.user.userName+'</a>');
+		//질문 답변 리스트 출력
+		if(json.questionTags != null && json.questionTags != "" ){
+			console.log("태그 있음!")
+			console.log(json.questionTags);
+			let tags = json.questionTags;
+			tags = tags.split("#");
+			console.log(tags);
+			let html = "";
+			for(let i=1;i<tags.length;i++){
+				console.log(i);
+				html +='<a class="text-primary mr-2 p-0 px-1 btn btn-light alert-primary" href="#">#'+tags[i]+'</a>';
+			}
+			$("#tagList").append(html);
+		}
+		
+		console.log(userId, json.user.userId);
+		if(userId == json.user.userId){
+			$("#modify").append("<a id='modifyBtn' class='px-1 btn hov-p text-dark mx-1' href='/modifyQuestion?questionId="+json.questionId+"'>수정</a>");
+			console.log("수정가능");
+		}else{
+			console.log("수정불가");
+		}
+		getAnswerList();
+	}
+});
+
+//질문 댓글출력
+$("#commentBtn").click(function(){
+	if($("#questionComment").css("display") == "none"){   
+        $('#questionComment').slideDown(300);
+    } else {  
+        $('#questionComment').slideUp(300);
+    }  
+	appendQuestionComment();
+});
+//질문 댓글 추가하기
+$("#questionCommentBtn").click(function(){
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	$.ajax({
+		url : "/rest/questionCommentAdd",
+		method : "post",
+		data : { "questionBoard.questionId" : getParam("questionId"),
+				 "questionCommentContent": $("#questionCommentContent").val(),
+			 	 "user.userId" : userId},
+		success:function(json){
+			$("#commentBtn").empty();
+			$("#commentBtn").append("<i class='far fa-comment-dots mx-1'></i>"+json);
+			appendQuestionComment();
+			//console.log("questionCommentAdd success");
+		}
+	})
+});
+
+
+// 질문 답변 추가하기
+$("#addAnswerBtn").click(function(){
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	//alert("준비중입니다.");
+	$.ajax({
+		url : "/rest/answerAdd",
+		method : "post",
+		data : {"questionBoard.questionId" : getParam("questionId"),
+				"user.userId" : userId,
+				"answerContent" : $("#summernote").summernote('code')},
+		success : function(json){
+			console.log(json)
+			getAnswerList();
+		}
+	})
+});
+
+//질문 게시글 추천기능
+$("#goodBtn").click(function(){
+	console.log(userId);
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	$.ajax({
+		url : "/rest/questionVote",
+		method :"post",
+		data : {"user.userId":userId,
+				"questionBoard.questionId": getParam("questionId")
+			},
+		success : function(json){
+			console.log("추천",json);
+			console.log("추천추천");
+			if(json == 1){
+				alert("추천👍");	
+			}else{
+				alert("이미 추천하셨습니다.")	
+			}
+		}
+	})
+})
+
+
+//답변 게시글 추천
+function answerGoodBtn(answerId){
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	
+	$.ajax({
+		url : "/rest/answerVote",
+		method : "post",
+		data : {"user.userId": userId,
+				"answer.answerId" : answerId},
+		success : function(json){
+			console.log(json);
+			console.log("답글추천");
+			if(json == 1){
+				alert("추천👍");	
+			}else{
+				alert("이미 추천하셨습니다.")	
+			}
+		}
+	})
+}
+
+//질문 댓글 리스트 출력
+function appendQuestionComment(){
+	$.ajax({
+		url:"/rest/getQuestionCommentList",
+		method:"POST",
+		data:{"questionId" : getParam("questionId")},
+		success: function(json){
+			console.log(json);
+			$("#questionCommentList").empty();
+			$(json).each(function(index,item){
+				html =	"<p class='text-dark mb-1 small'>"+item.questionCommentContent+"</p>"+
+						"<p class='text-right small  mb-1'>"+ item.questionCommentDatetime+" <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></p><hr class='my-1'>";
+				$("#questionCommentList").append(html);
+			})
+		}
+	});
+}
+
+//질문 답변리스트 출력
+function getAnswerList(){
+	$.ajax({
+		url : "/rest/getAnswerList",
+		method : "post",
+		data : {"questionId" : getParam("questionId")},
+		success : function(json){
+			console.log(json);
+			$("#answerCount").text(json.length+"개의 답변");
+			$("#answerList").empty();
+			$(json).each(function(index, item){
+				//질문의 답변 출력
+				let answerhtml = "<div class='text-dark text-lg px-1'>"+item.answerContent+"</div>";
+				//버튼 생성
+				answerhtml += "<div class='d-flex justify-content-between small mt-5'><div class='px-2'><a id='answerCommentBtn' onclick='openComment("+item.answerId+",true)'>";
+				answerhtml += "<i id='answerCommentTotal"+item.answerId+"' class='far fa-comment-dots mx-1'></i></a>";
+				answerhtml += "<a class='px-1 py-0 text-sm text-danger' href='' onclick=window.open('/answerReport?answerId="+item.answerId+"','답변신고하기','width=600,top=200,left=600,height=410');return false;>신고</a>"
+				answerhtml += "<a class='px-1 py-0 text-sm text-primary' href='' onclick='answerGoodBtn("+item.answerId+")'>추천</a></div>";
+				//질문의 댓글 리스트 출력
+			 	answerhtml += "<div class='d-felx'><div class='mb-0 mx-2 pr-2'>"+item.answerDatetime+" <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></div></div>";
+				answerhtml += "</div><div class='card border-0 bg-light card-body mb-2' style='display: none;' id='answerComment"+item.answerId+"'><div id='answerCommentList"+item.answerId+"'></div>";
+				//질문의 댓글 입력창 출력
+				answerhtml += "<textarea id='answerCommentContent"+item.answerId+"' class='form-control form-control-sm' maxlength='1000'"+
+							  "	placeholder='개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다.'></textarea>"+
+							  "<div class='text-right m-1'><button type='button' id='questionAnswerCommentBtn' onclick='addAnswerComment("+item.answerId+")' class='btn btn-sm btn-primary text-right px-3'>등록</button></div></div>";
+							  
+				answerhtml += "<hr class='mt-2'>";
+				openCommentCount(item.answerId);
+				$("#answerList").append(answerhtml);
+			})
+		}	
+	});
+}
+
+//질문 답변 댓글 추가
+function addAnswerComment(answerId){
+	console.log("answerCommentContent",$("#answerCommentContent"+answerId).val());
+	$.ajax({
+		url:"/rest/answerCommentAdd",
+		method:"post",
+		data:{"answerCommentContent" : $("#answerCommentContent"+answerId).val(),
+			  "user.userId":userId,
+			  "answer.answerId":answerId},
+		success:function(){
+			openComment(answerId, false);
+		},
+		error : function(){
+			alert("로그인 후 이용할 수 있습니다.");
+		}
+	})
+}
+
+// 질문 답변의 댓글 토탈 수 출력 (**개의 댓글 보기)
+function openCommentCount(value){
+	//질문 답변의 댓글 본다
+	$.ajax({
+	url : "/rest/getAnswerCommentCount",
+	method : "post",
+	data : {"answerId" : value},
+	success :function(json){
+		//질문 답변 댓글 개수보기
+		$("#answerCommentTotal"+value).empty();
+		$("#answerCommentTotal"+value).append(json+"개의 답글 보기");
+		}
+	})
+}
+// 질문 답변의 댓글 리스트 출력
+function openComment(value, YN){
+	if(YN){
+		console.log("댓글 창 보이기/숨기기")
+		if($("#answerComment"+value).css("display") == "none"){   
+			$("#answerComment"+value).slideDown("300");
+	    } else {  
+	    	$("#answerComment"+value).slideUp("300");
+	    } 
+	}
+	//질문 답변의 댓글 본다
+	$.ajax({
+	url : "/rest/getAnswerCommentList",
+	method : "post",
+	data : {"answerId" : value},
+	success :function(json){
+		//질문 답변 댓글 개수보기
+		$("#answerCommentTotal"+value).empty();
+		$("#answerCommentTotal"+value).append(json.length+"개의 답글 보기");
+		answerCommentLength = json.length;
+		$("#answerCommentHtml").empty();
+		$("#answerCommentList"+value).empty();
+		console.log("answerComment",json);
+		$(json).each(function(index, item){
+			
+			let answerCommentHtml  = "<p class='text-dark mb-1 small'>"+item.answerCommentContent+"</p>"
+				+ "<p class='text-right small  mb-1'>"+ item.answerCommentDatetime+" <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></p><hr class='my-1'>";
+				/* alert("#answerCommentList"+value); */
+				$("#answerCommentList"+value).append(answerCommentHtml);
+			})
+		}
+	})
+}
+//질문 신고창 클릭
+$("#reportBtn").click(function() {
+	window.open("/questionReport?questionId="+getParam("questionId")+"","질문신고하기","width=600,top=200,left=600, height=410");return false;
+});
+</script>
+</html>

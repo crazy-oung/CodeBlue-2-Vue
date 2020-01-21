@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>회원가입 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body style="background: #ebebeb; height: 94vh">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" style="height: 100%">  
+			<div class="row pt-5 my-5">
+				<div class="col-sm-6 mt-5 pt-5 px-5"><!-- explain codeBlue member 혜택 -->
+					<img src="/img/codeBlueLogo.png" width="250px"> 
+					<h1 class="text-primary h4 mt-2">전문가 회원이 되어볼까요?</h1>
+					<label>코드블루 회원들은 ...</label>
+					<img src="img/maintain.svg" width="100%" class="my-4">
+					<hr>
+					<a href="/register">전문가가 아니신가요?</a>
+				</div>
+				
+				<div class="col-sm-6 text-left mb-3">
+					<!-- register Form begin -->
+					<div class="card shadow p-1 mx-5 mb-5"> 
+						<form class="was-validated card-body">
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="id">아이디</label>
+						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" required>
+						    <div class="valid-feedback" id="checkedId"><a href="#" class="text-danger" onclick="checkUserId()"><strong>중복검사를 위해 여기를 클릭!</strong> 중복 검사를 완료해 주세요!👈👈</a></div>
+						    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="name">닉네임</label>
+						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">닉네임을 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="feild">전공분야</label>
+						    <select type="text" class="form-control form-control-sm" id="feild" placeholder="전공분야" required></select>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">전공분야를 선택해주세요</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="license">라이센스 번호</label>
+						    <input type="text" class="form-control form-control-sm" id="license" placeholder="라이센스 번호" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">자격증 번호를 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="licenseIssueDate">발급날짜</label>
+						    <input type="date" class="form-control form-control-sm" id="licenseIssueDate" placeholder="발급날짜" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">자격증 발급 날짜를 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
+						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pw2">비밀번호 확인</label>
+						    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호 확인" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+						  </div> 
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="birthDate">생일</label>
+						    <input type="date" class="form-control form-control-sm" id="birthDate" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">생일을 입력해주세요.</div>
+						  </div> 
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="region">활동지</label>
+						    <select class="form-control form-control-sm" id="region" required></select> 
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">활동지를 선택해주세요.</div>
+						  </div> 
+						  <button type="button" class="btn btn-block btn-primary join" id="join">회원가입</button> 
+						 </form> 
+						  <!-- 입력 클릭시 인증코드 입력란 출력 -->
+						  <b class="text-sm card mt-3 mx-3 p-3 text-center text-primary shadow" id="notice" style="display:none">인증 메일이 전송 되었습니다!</b>
+						  <form class="was-validated card-body" > 
+							  <div id="codeForm" style="display:none">	  
+							  	<div class="form-group">
+							    	<label class="text-dark font-weight-bold">인증코드</label>
+							    	<input type="text" class="form-control" id="code" placeholder="인증코드를 입력해주세요" required>
+							    	<div class="valid-feedback">좋아요.</div>
+							    	<div class="invalid-feedback">인증 코드를 입력해주세요 🎆</div> 
+							  	</div> 
+							  	<button type="button" id="confirmCode" class="btn btn-block btn-outline-primary">확인</button>  
+								<a href="#" id="resend" class="small text-center">메일을 못 받으셨나요? 다시 보내드립니다!</a> 
+							  </div>
+						  </form>
+					</div>
+					<!-- register Form end -->
+				</div>
+				
+				
+			</div> 
+		</div> 
+		<!-- Page Content End --> 
+		 
+	
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+</body>
+<script> 
+
+function checkUserId(){
+	console.log($("#id").val())
+	$.ajax({
+		url : "/rest/userOne",
+		method : "post",
+		data : {"userId":$("#id").val()},
+		success : function(json){
+			console.log(json);
+			if(json != ""){
+				alert("아이디가 존재합니다!");
+				return;
+			}
+			if(confirm("아이디가 없습니다! 해당 주소로 아이디를 생성하시겠습니까?")){
+				alert("결정하면 되돌릴수 없습니다.");
+				
+				$('#id').prop('readonly', true); 
+				$("#checkedId").empty();
+				$("#checkedId").append("이메일 결정 완료! ☺")
+				$('#join').prop('disabled', false); 
+			}
+		}
+	})
+}
+
+$(document).ready(function(){
+	$('#join').prop('disabled', true); 
+	$.ajax({
+		url : "/rest/getFeildList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let feild;
+			$(json).each(function(index, item){
+				feild = "<option value='";
+				feild += item.feildId;
+				feild += "'>";
+				feild += item.feildName;
+				feild += "</option>";
+				$("#feild").append(feild);
+			})
+		}
+	})
+	$.ajax({
+		url : "/rest/getRegionList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let region;
+			$(json).each(function(index,item){
+				region = "<option value='";
+				region += item.regionId;
+				region += "'>";
+				region += item.regionName;
+				region += "</option>";
+				$("#region").append(region);
+			})
+		}
+	})
+})
+
+$(".join").click(function(){
+	if($("#pw").val() != $("#pw2").val()){
+		alert("입력하신 비밀번호가 틀립니다. 확인해 주세요");				
+		return;
+	}
+		
+	if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
+		alert("빈칸을 채워주세요!");
+		return;
+	} 
+	$(".join").empty();
+	$(".join").append('<span class="spinner-border spinner-border-sm"></span>');
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300);
+			
+			$(".join").empty();
+			$(".join").append('메일 전송 완료!');
+			
+			$('#id').prop('readonly', true); 
+			$("#name").prop('readonly', true); 
+			$("#pw").prop('readonly', true);
+			$("#pw2").prop("readonly", true);
+			$("#feild").not(":selected").attr("disabled", true);
+			$("#license").prop("readonly", true);
+			$("#licenseIssueDate").prop("readonly", true);
+			$("#birthDate").prop("readonly", true);
+			$("#region").not(":selected").attr("disabled", true);
+			
+			$(".join").prop('disabled', true);  
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
+
+	})
+	 
+})
+
+$("#resend").click(function(){
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300); 
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
+
+	})
+	 
+})
+ 
+$("#confirmCode").click(function(){
+	console.log("코드 검사");
+ 	$.ajax({
+ 		url:"/rest/verifyCode",
+		data:{ 	"userId" : $("#id").val() , 
+				"userName" : $("#name").val(),
+				"userPw" : $("#pw").val(),
+				"code" : $("#code").val(),
+				"userBirthdate" : $("#birthDate").val(),
+				"region.regionId" : $("#region").val()
+				},
+		method:"post", 
+		success:function(json){
+			console.log(json);
+			if(json == false){
+				alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
+				return;
+			}
+			$("#code").prop("disabled", true);
+			$("#confirmCode").prop("disabled", true); 
+			$('#resend').css("display", "none");  
+			
+			// 전문가 추가
+			$.ajax({
+		 		url:"/rest/addExpert",
+				data:{ 	"feildId" : $("#feild").val() , 
+						"expertLicenseNo" : $("#license").val(),
+						"expertLicenseIssueDate" : $("#licenseIssueDate").val(),
+						"userId" : $("#id").val()
+						},
+				method:"post", 
+				async : "true",
+				success:function(){   
+					alert("전문가 등록 완료! 감사합니다! 환영합니다~")
+					location.replace("/login");	
+				},
+				fail:function(){
+					alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
+				}
+			})					
+			
+		},
+		fail:function(){
+			alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
+		}
+	})
+})  
+		
+		
+</script>
+</html>

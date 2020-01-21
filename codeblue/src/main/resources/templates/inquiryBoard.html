@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>문의내역 - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+<body id="page-top">
+ 
+		<!-- Topbar -->
+		<div id="topBar"></div>
+		<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar">
+				</div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+				
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">문의내역 </h2>
+					</div><!-- page Heading End -->
+					<div class="card bg-gray-100 my-3 p-2">
+						<ul class="nav" id="inquiryCategory"></ul>
+					</div>
+					<div class="d-flex justify-content-between">
+						<div id="totalRow"></div>
+						<div class="text-right"><a class="font-weight-bold" href="inquiryBoard">전체보기</a></div>
+					</div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>문의유형</th>
+								<th>제목</th>
+								<th>문의일시</th>
+								<th>답변여부</th>
+							</tr>
+						</thead>
+						<tbody id="inquiryInfo">
+						</tbody>
+					</table>
+					<div class="d-flex justify-content-between py-4">
+						<div class="p-2">
+							<button type="button" id="prevBtnd" class="btn ml-1 btn-sm btn-primary">이전</button>
+							<span id="pageInfo"></span>
+							<button type="button" id="nextBtnd" class="btn ml-1 btn-sm btn-primary">다음</button>
+						</div>
+						<div class="text-right">
+							<button type="button" onclick="location.href='/addInquiryHistory'" class="btn btn-primary">문의 하기</button>
+						</div>
+					</div>
+				</div>
+				<!-- Page Content End -->
+	
+			</div><!-- row end -->
+			
+		</div>
+		</div> 
+	
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+	
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+
+</body>
+<script>
+	// ------------------------------------------------------문의 카테고리---------------------------------------------------
+	// 문의 카테고리
+	$.ajax({
+		url : "/rest/getInquiry",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			$(json).each(function(index, item){
+				html = " <li class='nav-item'><a class='p-1 mr-1 hov-p text-primary btn";
+				html += "' href='/inquiryBoard?inquiryId="+item.inquiryId+"'>"+
+				item.inquiryName +
+				"</a></li>";
+				$("#inquiryCategory").append(html);
+			});
+		}
+	});
+	//분야 선택
+	// mapper에서 Page클래스의 searchCategory에 넣어 줄것이기 때문에 restController에서 리퀘스트로 받을 때 이름을 바꾼다
+	var inquiryId = undefined;
+	if(getParam("inquiryId")!= null){
+		inquiryId = getParam("inquiryId");
+	}
+	console.log("inquiryId: ",inquiryId);
+	
+	// ------------------------------------------------------문의 카테고리 end---------------------------------------------------
+	// -------------------------------------------------------본문-------------------------------------------------------
+	//페이징
+	var currentPage = 1;
+	var lastPage = 0;
+	$("#prevBtnd").hide();
+	$("#nextBtnd").hide();
+	// 기본 홈
+	$.ajax({
+		url : "/rest/getInquiryBoard",
+		method : "post",
+		data : {"currentPage" : currentPage,
+				"inquiryId" : inquiryId},
+		success : function(json){
+			console.log(json);
+			$("#inquiryInfo").empty();
+			subInfo(json);
+			BtnShow(currentPage,lastPage);
+			$(json.list).each(function(index,item){
+				append(index,item);
+			});
+		}
+	});
+	// 이전 버튼
+	$("#prevBtnd").click(function(){
+		$.ajax({
+			url : "/rest/getInquiryBoard",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"inquiryId" : inquiryId},
+			success : function(json){
+				console.log(json);
+				$("#inquiryInfo").empty();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					append(index,item);
+				});
+			}
+		});
+	});
+	// 다음 버튼
+	$("#nextBtnd").click(function(){
+		$.ajax({
+			url : "/rest/getInquiryBoard",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"inquiryId" : inquiryId},
+			success : function(json){
+				console.log(json);
+				$("#inquiryInfo").empty();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					append(index,item);
+				});
+			}
+		});
+	});
+	// 출력 함수
+	function append(index,item){
+		if(item.inquiryAnswer == "Y") {
+			html = "<tr>";
+			html += "<td>"+item.inquiry.inquiryName+"</td>";
+			html += "<td><a href='/getInquiryOne?inquiryHistoryId="+item.inquiryHistoryId+"'>"+item.inquiryTitle+"</a></td>";
+			html += "<td>"+item.inquiryDatetime+"</td>";
+			html += "<td>답변완료</td>";
+			html += "</tr>";
+			$("#inquiryInfo").append(html);
+		} else {
+			html = "<tr>";
+			html += "<td>"+item.inquiry.inquiryName+"</td>";
+			html += "<td><a href='/getInquiryOne?inquiryHistoryId="+item.inquiryHistoryId+"'>"+item.inquiryTitle+"</a></td>";
+			html += "<td>"+item.inquiryDatetime+"</td>";
+			html += "<td>답변대기중</td>";
+			html += "</tr>";
+			$("#inquiryInfo").append(html);
+		}
+	}
+	// 현재,총페이지,총행 함수
+	function subInfo(json){
+		$("#totalRow").empty();
+		$("#pageInfo").empty();
+		currentPage = json.currentPage;
+		lastPage = json.lastPage;
+		if(json.inquiryId != null){
+			inquiryId = json.inquiryId;	
+		}
+		$("#totalRow").append("총 "+json.totalRow+"건");
+		$("#pageInfo").append(currentPage+"/"+lastPage);
+	}
+	// 이전,다음버튼 함수
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtnd").hide();
+		} else {
+			$("#prevBtnd").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtnd").show();
+		} else {
+			$("#nextBtnd").hide();
+		}
+	}
+	// -------------------------------------------------------본문 end-------------------------------------------------------
+	// 문의하기 버튼 클릭
+	$("#inquiryBtn").click(function(){
+		
+	});
+</script>
+</html>

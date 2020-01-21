@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.mapper.UserMapper">
+	<!-- Report 객체 -->
+	<resultMap type="com.example.codeblue.vo.Report" id="Report">
+		<result column="report_id" property="reportId"></result>
+	     <result column="report_name" property="reportName"></result>
+	</resultMap>
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
+	</resultMap>
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+	<!-- Tag 객체 -->
+	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
+		<result column="tag_id" property="tagId"></result>
+		<result column="tag_name" property="tagName"></result>
+	</resultMap>
+	
+	<!-- Feild 객체 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+	
+	<!-- NoticeBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.NoticeBoard" id="NoticeBoard">
+		<result column="notice_id" property="noticeId"></result>
+		<result column="notice_title" property="noticeTitle"></result>
+		<result column="notice_content" property="noticeContent"></result>
+		<result column="notice_datetime" property="noticeDatetime"></result>
+	</resultMap>
+	
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User">
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="user_pw" property="userPw"></result>
+		<result column="user_birthdate" property="userBirthdate"></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority"></result>
+		
+		<association property="region" resultMap="Region"></association>
+		<association property="rank" resultMap="Rank"></association>
+	</resultMap>
+	
+
+	<!-- QuestionComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
+		<result column="question_comment_id" property="questionCommentId"></result>
+		<result column="question_comment_content" property="questionCommentContent"></result>
+		<result column="question_comment_datetime" property="questionCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	
+	<!-- QuestionBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard">
+		<result column="question_id" property="questionId"></result>
+		<result column="question_title" property="questionTitle"></result>
+		<result column="question_content" property="questionContent"></result>
+		<result column="question_datetime" property="questionDatetime"></result>
+		<result column="answer_count" property="answerCount"></result>
+		<result column="vote_count" property="voteCount"></result>
+		<result column="comment_count" property="commentCount"></result>
+		<result column="question_tags" property="questionTags"></result>		
+		<association property="feild" resultMap="Feild"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	
+	<!-- Answer 객체 -->
+	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
+		<result column="answer_id" property="answerId"></result>
+		<result column="answer_content" property="answerContent"></result>
+		<result column="answer_datetime" property="answerDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	<!-- AnswerComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.AnswerComment" id="AnswerComment">
+		<result column="answer_comment_id" property="answerCommentId"></result>
+		<result column="answer_comment_content" property="answerCommentContent"></result>
+		<result column="answer_comment_datetime" property="answerCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="answer" resultMap="Answer"></association>
+	</resultMap>
+	<!-- service_category 객체 -->
+	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
+		<result column="service_category_id" property="serviceCategoryId"></result>
+		<result column="service_category_name" property="serviceCategoryName"></result>
+	</resultMap>
+	<!-- FaqBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard">
+		<result column="FAQ_id" property="faqId"></result>
+		<result column="FAQ_title" property="faqTitle"></result>
+		<result column="FAQ_content" property="faqContent"></result>
+		<result column="FAQ_datetime" property="faqDatetime"></result>
+		
+		<association property="serviceCategory" resultMap="ServiceCategory">
+		</association>
+	</resultMap>
+	<!-- ReportHistory 객체  -->
+	<resultMap type="com.example.codeblue.vo.ReportHistory" id="ReportHistory"> 
+	   	<result column="report_history_id" property="reportHistoryId" ></result>
+	   	<result column="report_title" property="reportTitle" ></result>
+	   	<result column="report_content" property="reportContent" ></result>
+	   	<result column="report_datetime" property="reportDatetime"></result>
+	   
+	   	<association property="report" resultMap="Report">
+	  	</association>
+	  	<association property="user" resultMap="User">
+	   	</association>
+	   	<association property="questionBoard" resultMap="QuestionBoard">
+	  	</association>
+	  	<association property="answer" resultMap="Answer">
+	   	</association>
+	</resultMap>
+	<!-- Inquiry 객체 -->
+	<resultMap type="com.example.codeblue.vo.Inquiry" id="Inquiry">
+		<result column="inquiry_id" property="inquiryId"></result>
+		<result column="inquiry_name" property="inquiryName"></result>
+	</resultMap>
+	<!-- InquiryHistory 객체 -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistory" id="InquiryHistory">
+		<result column="inquiry_history_id" property="inquiryHistoryId"></result>
+		<result column="inquiry_title" property="inquiryTitle"></result>
+		<result column="inquiry_content" property="inquiryContent"></result>
+		<result column="inquiry_datetime" property="inquiryDatetime"></result>
+		<result column="inquiry_answer" property="inquiryAnswer"></result>
+		
+		<association property="inquiry" resultMap="Inquiry"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	<!-- InquiryHistoryAnswer 객체 -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistoryAnswer" id="InquiryHistoryAnswer">
+		<result column="inquiry_history_answer_title" property="inquiryHistoryAnswerTitle"></result>
+		<result column="inquiry_history_answer_content" property="inquiryHistoryAnswerContent"></result>
+		<result column="inquiry_history_answer_datetime" property="inquiryHistoryAnswerDatetime"></result>
+		<association property="inquiryHistory" resultMap="InquiryHistory"></association>
+	</resultMap>
+	
+	<!-- tagList객체 -->
+	<resultMap id="tagList" type="java.util.HashMap">
+      <result column="tag_name" property="tagName" javaType="java.lang.String" />
+      <result column="COUNT(*)" property="count"  javaType="java.lang.String" />
+   </resultMap>
+   
+   <!-- QuestionCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+
+	<!-- CommentCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="CommentCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+
+	<!-- QuestionVote 객체  -->
+	<resultMap type="com.example.codeblue.vo.QuestionVote" id="QuestionVote">
+		<result column="question_vote_datetime" property="questionVoteDateTime"></result>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	
+	<!-- AnswerVote 객체 -->	
+	<resultMap type="com.example.codeblue.vo.AnswerVote" id="AnswerVote">
+		<result column="answer_vote_datetime" property="answerVoteDateTime"></result>
+		<association property="answer" resultMap="Answer"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	<!-- 태그 리스트 맵 타입. -->
+	<resultMap id="TagList" type="java.util.HashMap">
+		<result column="tag_name" property="tagName" javaType="java.lang.String" />
+		<result column="COUNT(*)" property="count"  javaType="java.lang.String" />
+	</resultMap>
+	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<!-- 태그 리스트 출력 -->
+	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="TagList">
+		SELECT tag_name, COUNT(*) 
+		FROM tag 
+ 		<where>
+			<if test="searchWord != '' ">
+				tag_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where> 
+		GROUP BY tag_name 
+		ORDER BY COUNT(*) desc 
+		limit #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 태그 전체 행 수 가져오기 -->
+	<select id="selectTagTotalRow" resultType="int">
+		SELECT COUNT(distinct tag_name)
+		FROM tag
+	</select>
+	<!-- 회원 상세정보 -->
+	<select id="selectUserOne" parameterType="String" resultMap="User">
+	      SELECT 
+	          u.user_id,
+	          u.user_name,
+	          r.region_name,
+	          u.user_birthdate,
+	          u.user_createtime,
+	          k.rank_name
+	      FROM user u INNER JOIN region r INNER JOIN rank k
+	      ON u.region_id = r.region_id and
+			u.rank_id = k.rank_id  
+		  WHERE u.user_id = #{userId}
+	</select>
+	    
+    <!-- 질문 게시글 출력  페이징 -->
+    <select id="selectQuestionPaging" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+		 SELECT	qb.question_id, 
+		    	qb.question_title,
+		 		qb.question_datetime, 
+		 		u.user_id
+		FROM question_board qb INNER JOIN user u
+		on qb.user_id = u.user_id 
+		WHERE u.user_id = #{userId}
+		ORDER BY question_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+    </select>
+	
+	<!-- 해당유저 질문수 -->
+	<select id="selectQuestionBoardCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM question_board q Inner Join user u
+		ON q.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+	
+	<!-- 해당유저 월별 게시글 수 차트 -->
+	<select id="selectQuestionChart" resultMap="QuestionCount" parameterType="String">
+		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+		      FROM ( SELECT question_datetime, user_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+		      ON u.user_id = t.user_id
+		      WHERE u.user_id = #{userId}
+	    GROUP BY question_month
+	</select>
+	
+    <!-- 댓글 리스트 출력 페이징 -->
+    <select id="selectCommentPaging" resultMap="QuestionComment" parameterType="com.example.codeblue.vo.Page">
+	   	SELECT	qb.question_id, 
+		    	qc.question_comment_id,
+		    	qc.question_comment_datetime,
+		    	qc.question_comment_content,
+		    	u.user_id	 		
+		FROM question_comment qc INNER JOIN user u INNER JOIN question_board qb
+		ON qc.user_id = u.user_id AND qc.question_id = qb.question_id
+		WHERE u.user_id = #{userId}
+		ORDER BY qc.question_comment_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+    </select>
+    
+	
+	<!-- 해당유저 월별 답변 수 차트 -->
+	<select id="selectAnswerChart" resultMap="CommentCount" parameterType="String">
+		SELECT MONTH(answer_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+		      FROM ( SELECT answer_datetime, user_id FROM answer WHERE YEAR(answer_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+		      ON u.user_id = t.user_id
+		      WHERE u.user_id = #{userId}
+	    GROUP BY question_month
+    </select>
+    	
+	<!-- 해당유저 댓글수 -->
+	<select id="selectQuestionUserCommentCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM question_comment qc Inner Join user u
+		ON qc.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+	
+	<!-- 해당유저 답변 리스트 출력 (페이징)-->
+	<select id="selectQuestionAnswerPaging" resultMap="Answer" parameterType="com.example.codeblue.vo.Page">
+		SELECT a.answer_id,
+				concat(substring(a.answer_content,1,20),'...')AS answer_content,
+				a.answer_datetime,
+				qb.question_id,
+				u.user_id 
+		FROM answer a INNER JOIN user u INNER JOIN question_board qb
+		ON a.user_id = u.user_id AND a.question_id = qb.question_id
+		WHERE u.user_id = #{userId}
+		ORDER BY a.answer_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 해당유저 댓글수 -->
+	<select id="selectAnswerCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM answer a Inner Join user u
+		ON a.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+
+	<!-- 해닫유저가 받은 질문 추천수 -->
+	<select id="selectUserVote" resultType="int" parameterType="String">
+		SELECT COUNT(qb.question_id)
+		FROM question_vote qv INNER JOIN question_board qb
+		ON qv.question_id = qb.question_id
+		WHERE qb.user_id = #{userId}
+		GROUP BY qb.user_id
+	</select>
+	
+	<!-- 해당 질문 게시글 추천전 중복조회 -->
+	<select id="selectQuestionVoteCheck" resultMap="QuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
+		SELECT user_id, question_id 
+		FROM question_vote
+		WHERE user_id = #{user.userId} and question_id = #{questionBoard.questionId}
+	</select>
+	
+	<!--해당 질문 게시글 추천기능  -->
+	<insert id="insertQuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
+		INSERT INTO question_vote (
+			user_id, 
+			question_id,
+			question_vote_datetime
+		)VALUES(
+			#{user.userId}, 
+			#{questionBoard.questionId}, 
+			now()
+		)
+	</insert> 
+	
+	<!-- 해당 답변 글 추천전 중복조회 -->
+	<select id="selectAnswerVoteCheck" resultMap="AnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		SELECT user_id, answer_id 
+		FROM answer_vote
+		WHERE user_id = #{user.userId} and answer_id = #{answer.answerId}
+	</select>
+	
+
+	<!--해당 답변글 추천기능  -->
+	<insert id="insertAnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		INSERT INTO answer_vote (
+			user_id, 
+			answer_id,
+			answer_vote_datetime
+		)VALUES(
+			#{user.userId}, 
+			#{answer.answerId}, 
+			now()
+		)
+	</insert> 
+   
+   <!-- 유저가 사용한 태그리스트 출력(페이징) -->
+   <select id="selectUserTagPaging" parameterType="com.example.codeblue.vo.Page" resultMap="tagList">
+	      SELECT t.tag_name, COUNT(*) 
+	      FROM tag t INNER JOIN user u 
+	      WHERE u.user_id = #{userId}
+	      GROUP BY t.tag_name 
+	      ORDER BY COUNT(*) desc 
+	      limit #{beginRow}, #{rowPerPage}
+   </select>
+   
+   <!-- 유저가 사용한 태그 수 -->
+   <select id="selectUserTagTotalRow" resultType="int" parameterType="String">
+	      SELECT COUNT(t.tag_name)AS count
+	      FROM tag t INNER JOIN user u
+	      WHERE u.user_id = #{userId}
+   </select>
+   
+   <!-- 질문글 수정 -->
+   <update id="updateQuestion" parameterType="com.example.codeblue.vo.QuestionBoard">
+    	UPDATE question_board SET question_title = #{questionTitle}, 
+							      question_content= #{questionContent}, 
+							      feild_id= #{feild.feildId}, 
+							      question_tags= #{questionTags}   
+    	WHERE user_id = #{user.userId} AND question_id= #{questionId}
+   </update>
+	
+	<!-- ㅇㅇ -->
+	
+	<!-- 답변 상세정보 -->
+	<select id="selectAnswerOne" parameterType="String" resultMap="Answer">
+		SELECT 
+		qb.question_title,
+		a.user_id,
+		a.answer_id
+		FROM answer a
+		INNER JOIN question_board qb
+		ON a.question_id = qb.question_id
+		INNER JOIN user u
+		ON a.user_id = u.user_id
+		WHERE a.answer_id = #{answerId}
+	</select>
+	<!-- 신고값 저장 -->
+	<insert id="insertReportHistory" parameterType="com.example.codeblue.vo.ReportHistory">
+		INSERT INTO report_history (
+		<if test="questionBoard != null">
+			question_id,
+		</if>
+		<if test="answer != null">
+			answer_id,
+		</if>
+			report_id,
+			user_id,
+			report_title,
+			report_content,
+			report_datetime
+		) VALUE (
+		<if test="questionBoard != null">
+			#{questionBoard.questionId},
+		</if>
+		<if test="answer != null">
+			#{answer.answerId},
+		</if>
+			#{report.reportId},
+			#{user.userId},
+			#{reportTitle},
+			#{reportContent},
+			NOW()
+		)
+	</insert>
+	<!-- 신고창 카테고리 -->
+	<select id="selectReport" resultMap="Report">
+		SELECT 
+			report_id,
+			report_name
+		FROM report
+	</select>
+	
+	<!-- 태그 등록 -->
+	<insert id="insertTag" parameterType="map">
+		INSERT INTO tag(question_id, tag_name) VALUES( #{questionId}, #{tagName})
+	</insert>
+	
+	<select id="selectLastInsertQuestionId" resultType="int">
+		SELECT max(question_id) FROM question_board;
+	</select>
+	
+	<!--  질문 답변 댓글 총 개수 가져오기 -->
+	<select id="selectAnswerCommentCount" resultType="int" parameterType="int">
+		SELECT COUNT(*)
+		FROM answer_comment
+		WHERE answer_id = #{answerId}
+	</select>
+	<!--  질문 댓글 추가하기 (원본) -->
+	<insert id="insertQuestionComment" parameterType="com.example.codeblue.vo.QuestionComment">
+		INSERT INTO question_comment(
+			question_id,
+			user_id,
+			question_comment_content,
+			question_comment_datetime
+		) VALUES(
+			#{questionBoard.questionId},
+			#{user.userId},
+			#{questionCommentContent},
+			NOW()
+		)
+	
+	</insert>
+	<!--  질문댓글 수 가져오기 -->
+	<select id="selectQuestionCommentTotal" parameterType="int" resultType="int">
+	SELECT COUNT(*)
+	FROM question_comment
+	WHERE question_id = #{questionId}
+	
+	</select>
+	<!--  질문 답변 댓글 추가하기 (원본) -->
+	<insert id="insertAnswerComment" parameterType="com.example.codeblue.vo.AnswerComment">
+		INSERT INTO answer_comment(
+			answer_id,
+			user_id,
+			answer_comment_content,
+			answer_comment_datetime
+		) VALUES (
+			#{answer.answerId},
+			#{user.userId},
+			#{answerCommentContent},
+			NOW()
+		)
+	</insert>
+	<!-- 질문 답변 댓글 리스트 가져오기 -->
+	<select id="selectAnswerCommentList" parameterType="int" resultMap="AnswerComment">
+		SELECT	ac.answer_comment_id,
+				ac.answer_id,
+				u.user_id,
+				u.user_name,
+				ac.answer_comment_content,
+				ac.answer_comment_datetime
+		FROM answer_comment ac INNER JOIN user u
+		ON ac.user_id = u.user_id
+		WHERE ac.answer_id = #{answerId}
+		ORDER BY ac.answer_comment_datetime DESC
+	</select>
+	<!--질문 답변 추가하기  -->
+	<insert id="insertAnswer" parameterType="com.example.codeblue.vo.Answer">
+		INSERT INTO answer  (
+			question_id,
+			answer_content,
+			answer_datetime,
+			user_id
+		)
+		VALUES (
+			#{questionBoard.questionId},
+			#{answerContent},
+			NOW(),
+			#{user.userId}
+		)			
+	</insert>
+	<!--질문 답변 리스트 가져오기 -->
+	<select id="selectAnswerList" parameterType="int" 
+	resultMap="Answer">
+		SELECT a.answer_id,
+			a.answer_content,
+			a.answer_datetime,
+			u.user_id,
+			u.user_name,
+			a.question_id
+		FROM answer a INNER JOIN user u
+		ON a.user_id = u.user_id
+		WHERE a.question_id =  #{questionId}
+		ORDER BY a.answer_datetime DESC
+	</select>
+
+	<select id="selectQuestionCommentList" parameterType="int" resultMap="QuestionComment">
+		SELECT	
+			qc.question_comment_id,
+			u.user_id,
+			u.user_name,
+			qc.question_comment_content,
+			qc.question_id,
+			qc.question_comment_datetime
+		FROM question_comment qc INNER JOIN user u
+		ON u.user_id = qc.user_id
+		WHERE qc.question_id = #{qestionId}
+		ORDER BY qc.question_comment_datetime DESC
+	</select>
+	
+	<select id="selectQuestionCommentCount" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(question_id) 
+		FROM question_comment
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardOne" parameterType="int" resultMap="QuestionBoard">
+		SELECT 
+			qb.question_id,
+			qb.question_title,
+			qb.question_content,
+			qb.question_datetime,
+			qb.question_tags,
+			qb.feild_id,
+			u.user_id,
+			u.user_name
+		FROM question_board qb INNER JOIN user u 
+		ON u.user_id = qb.user_id
+		WHERE qb.question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.question_tags,
+				q.user_id,
+				u.user_name,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				CASE WHEN qc.comment_count IS NULL then 0 ELSE qc.comment_count END AS comment_count,
+				CASE WHEN qv.vote_count IS NULL then 0 ELSE qv.vote_count END AS vote_count,
+				CASE WHEN ad.answer_datetime IS NULL then DATE(0) ELSE ad.answer_datetime END AS answer_datetime
+		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,question_id FROM
+		question_comment
+		GROUP BY question_id) qc
+		ON q.question_id = qc.question_id
+		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
+		question_vote
+		GROUP BY question_id) qv
+		ON q.question_id = qv.question_id
+		LEFT JOIN (SELECT MAX(answer_datetime) as answer_datetime,question_id FROM answer
+		GROUP BY question_id
+		HAVING MAX(answer_datetime)) ad
+		ON q.question_id = ad.question_id
+		INNER JOIN user u
+		ON u.user_id = q.user_id
+		<where>
+			<if test="searchWord != null">
+				q.question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="feildId != 99">
+				q.feild_id = #{feildId}
+			</if>
+		</where>
+		<trim prefix="ORDER BY">
+			<if test="searchCategory == 'today'"> q.question_datetime DESC </if>
+			<if test="searchCategory == 'hot'"> answer_count DESC </if> 
+			<if test="searchCategory == 'help'"> answer_count ASC,q.question_datetime DESC </if>
+			<if test="searchCategory == 'ongoing'"> answer_datetime DESC </if>                          
+		</trim> 
+			LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	
+	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			COUNT(*)
+		FROM question_board
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="selectNoticeBoardList"
+			parameterType="com.example.codeblue.vo.Page"
+			resultMap="NoticeBoard">
+	SELECT notice_id,
+			notice_title,
+			notice_content,
+			notice_datetime
+    FROM notice_board
+    ORDER BY notice_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   
+   <select id="noticeBoardTotalRow"
+		   resultType="int">
+   		SELECT COUNT(*) 
+   			FROM notice_board
+   </select>
+   <select  id="selectNoticeBoardOne" 
+   			parameterType="int"
+   			resultMap="NoticeBoard">
+   	SELECT notice_id,
+			notice_title,
+			notice_content,
+			notice_datetime
+    FROM notice_board
+    WHERE notice_id = #{noticeId}
+   	</select>
+
+	<insert id="insertQuestion" parameterType="com.example.codeblue.vo.QuestionBoard">
+		INSERT INTO question_board  (
+			user_id,
+			question_title,
+			question_content,
+			question_datetime,
+			feild_id,
+			question_tags
+		)
+		VALUES (
+			#{user.userId},
+			#{questionTitle},
+			#{questionContent},
+			NOW(),
+			#{feild.feildId},
+			#{questionTags}
+		)		
+	</insert>
+
+	<insert id="insertExpert" parameterType="com.example.codeblue.vo.Expert">
+		INSERT INTO expert(
+			user_id,
+			feild_id,
+			expert_license_no,
+			expert_license_issue_date
+		)VALUE(
+			#{userId}, #{feildId}, #{expertLicenseNo},#{expertLicenseIssueDate}
+		)
+	</insert>
+
+	<insert id="insertUser" parameterType="com.example.codeblue.vo.User">
+		INSERT INTO user(
+			user_id,
+			user_name,
+			user_pw,
+			user_birthdate,
+			user_createtime,
+			region_id
+		) values (
+			#{userId}, #{userName}, #{userPw},#{userBirthdate}, now(),#{region.regionId}
+		)
+	</insert>
+	
+	<select id="selectUserId" parameterType="com.example.codeblue.vo.User" resultMap="User">
+		SELECT user_id, user_name
+		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
+	</select>
+	
+	<select id="selectUserIdForCheck" parameterType="com.example.codeblue.vo.User" resultMap="User">
+		SELECT user_id, user_name
+		FROM user WHERE user_id = #{userId}
+	</select>
+	
+
+	
+	<update id="updateUserPw" parameterType="com.example.codeblue.vo.User">
+		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
+	</update>
+	<!-- 유저조회 -->
+	<select id="selectUserList" resultMap="User">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_activity
+		from user u inner join region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where u.user_activity = 'Y'
+		<if test="searchWord != null">
+			AND user_name like CONCAT('%',#{searchWord},'%')
+		</if>
+		ORDER BY user_createtime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 유저 수 카운팅 -->
+	<select id="selectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+	select
+		count(*) 
+	from user
+	where user_activity = 'Y'
+	<if test="searchWord != null">
+			AND user_name LIKE CONCAT('%',#{searchWord},'%')
+	</if>
+	</select>
+	<!-- serviceCategory 리스트 -->
+	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
+		select service_category_id, service_category_name
+		from service_category
+	</select>
+	<!-- faq 리스트 -->
+	<select id="selectFaqList" parameterType="com.example.codeblue.vo.Page" resultMap="FaqBoard">
+		SELECT f.FAQ_id, sc.service_category_name, f.FAQ_title, f.FAQ_datetime
+		FROM faq_board f INNER JOIN service_category sc
+		ON f.service_category_id = sc.service_category_id
+		<if test="searchCategory != null">
+			WHERE f.service_category_id = #{searchCategory}
+		</if> 
+		ORDER BY f.FAQ_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- faq 총 수 -->
+	<select id="selectFaqCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT COUNT(*)
+		FROM faq_board
+		<if test="searchCategory != null">
+			WHERE service_category_id = #{searchCategory}
+		</if>
+	</select>
+	<!--  faqone 출력 (이전글,다음글까지 출력) -->
+	<select id="selectFaqOne" parameterType="int" resultMap="FaqBoard">
+		SELECT f.FAQ_id, f.FAQ_title, se.service_category_name, f.FAQ_content, f.FAQ_datetime
+		FROM faq_board f INNER JOIN service_category se
+		ON f.service_category_id = se.service_category_id
+		WHERE f.FAQ_id IN (
+		    (SELECT faq_id FROM faq_board WHERE faq_id &lt; #{faqId} ORDER BY faq_id DESC LIMIT 1),
+			 (SELECT faq_id FROM faq_board WHERE faq_id = #{faqId}),
+		    (SELECT faq_id FROM faq_board WHERE faq_id &gt; #{faqId} ORDER BY faq_id LIMIT 1)
+			 );
+	</select>
+	<!-- 문의 답변 -->
+	<select id="selectInquiryHistoryAnswerOne" parameterType="int" resultMap="InquiryHistoryAnswer">
+		SELECT 
+			inquiry_history_answer_title,
+			inquiry_history_answer_content,
+			inquiry_history_answer_datetime
+		FROM inquiry_history_answer
+		WHERE inquiry_history_id = #{inquiryHistoryId}
+	</select>
+	<!-- 문의 상세내용 -->
+	<select  id="selectInquiryHistoryOne" parameterType="int" resultMap="InquiryHistory">
+	   	SELECT  ih.inquiry_history_id,
+				ih.inquiry_title,
+				ih.inquiry_content, 
+				i.inquiry_name,
+				u.user_id,
+				ih.inquiry_datetime,
+				ih.inquiry_answer
+	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
+	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
+	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
+   	</select>
+	<!-- 문의값 저장 -->
+	<insert id="insertInquiryHistory" parameterType="com.example.codeblue.vo.InquiryHistory">
+		INSERT INTO inquiry_history (
+			inquiry_title,
+			inquiry_content,
+			inquiry_id,
+			user_id,
+			inquiry_datetime
+		) VALUES (
+			#{inquiryTitle},
+			#{inquiryContent},
+			#{inquiry.inquiryId},
+			#{user.userId},
+			NOW()
+		)
+	</insert>
+	<!-- inquiry 카테고리 출력 -->
+	<select id="selectInquiry" resultMap="Inquiry">
+		SELECT inquiry_id, inquiry_name
+		FROM inquiry
+	</select>
+	<!-- inquiryHistory 리스트 출력 -->
+	<select id="selectInquiryHistory" parameterType="com.example.codeblue.vo.Page" resultMap="InquiryHistory">
+		SELECT inh.inquiry_history_id, inq.inquiry_name, inh.inquiry_title, inh.inquiry_datetime, inh.inquiry_answer
+		FROM inquiry_history inh INNER JOIN inquiry inq INNER JOIN user u
+		ON inh.inquiry_id = inq.inquiry_id AND inh.user_id = u.user_id
+		WHERE inh.user_id = #{userId}
+		<if test="searchCategory != null">
+			AND inh.inquiry_id = #{searchCategory}
+		</if>
+		ORDER BY inh.inquiry_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 문의 내역 리스트 행의 수 -->
+	<select id="selectInquiryHistoryCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT COUNT(*)
+		FROM inquiry_history inh INNER JOIN inquiry inq INNER JOIN user u
+		ON inh.inquiry_id = inq.inquiry_id AND inh.user_id = u.user_id
+		WHERE inh.user_id = #{userId}
+		<if test="searchCategory != null">
+			AND inh.inquiry_id = #{searchCategory}
+		</if>
+	</select>
+	
+	<!-- 유저 이름, 비밀번호 변경 -->
+	<update id="updateUserProfile"
+			parameterType="com.example.codeblue.vo.User">
+		Update user
+		SET user_name = #{userName},
+			user_pw = #{userPw}
+		WHERE user_id = #{userId}	
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

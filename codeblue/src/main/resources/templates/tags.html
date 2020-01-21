@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.wrapper {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 100px 100px 100px 100px 100px;
+}
+</style> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>태그 - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+<body id="page-top">
+ 
+		<!-- Topbar -->
+		<div id="topBar"></div>
+		<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar">
+				</div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+				
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2 NotoSans">태그 </h2>
+					</div><!-- page Heading End -->
+					
+					<div class="d-flex m-2">
+						<input type="text" autocomplete="off" class="form-control form-control-sm" id="searchWord" style="width: 10%">
+						<button type="button" class="btn btn-sm btn-primary" id="searchTagBtn">검색</button>
+					</div>
+					<hr>
+					
+					<!-- 본문 -->
+					<div class="wrapper" id="tagList"></div>
+					
+					<div class="d-flex justify-content-between">  
+					    <div class="p-3" id="totalRow"></div>
+					    <div class="p-3">
+						    <button type="button" class="btn btn-primary btn-sm" id="prev">이전</button>
+						    <button type="button" class="btn btn-primary btn-sm" id="next">다음</button>
+					    </div>
+					</div>
+					
+				<!-- Page Content End -->
+				
+			</div><!-- row end -->
+			
+		</div>
+		</div> 
+	
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+	
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+
+</body>
+<script>
+	var currentPage = 1;
+	var lastPage = 0;
+	var rowPerPage = 20;
+	var totalRow = 0;
+	var searchWord = null;
+	
+function appendTags(){
+	console.log("함수 실행")
+	$("#tagList").empty();
+	
+	console.log(currentPage);
+	$.ajax({
+		url : "/rest/getTagList",
+		method : "get",
+		data : {"currentPage" : currentPage, "searchWord": $("#searchWord").val(), "rowPerPage" : rowPerPage},
+		success : function(json){
+			console.log("getTagList success")
+			console.log(json);
+			
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			totalRow = json.totalRow;
+			
+			$("#searchWord").append(json.searchWord);
+			
+			
+			// 이전 다음 버튼 
+			if(currentPage == 1){
+				console.log("이전 버튼 숨김")
+				$("#prev").hide();
+			} else {
+				$("#prev").show();
+			} 
+			// 마지막 페이지 
+			if(currentPage <lastPage) {
+				$("#next").show();
+			} else {
+				$("#next").hide();
+			}
+			
+			$(json.list).each(function(index,item){
+				html = "<div class='p-2'>";
+				html += "<div class='px-2 py-3'><a href='#' class='btn btn-sm hov-p font-weight-bold text-primary p-1'>#"+item.tagName+"</a> x ";
+				html += "<small class='text-dark text-right'>"+item.count+"</small></div></div>";
+				$("#tagList").append(html);
+			});
+		}
+	});
+
+}
+
+$(document).ready(function(){
+	
+	appendTags();
+	
+	// 이전버튼
+	$("#prev").click(function(){
+		--currentPage;
+		appendTags();
+	});
+	
+	// 다음버튼
+	$("#next").click(function(){
+		++currentPage;
+		appendTags();
+	});
+	
+	//검색버튼
+	$("#searchTagBtn").click(function(){
+		console.log("검색시작");
+		appendTags();
+	});
+	
+	
+});	
+
+
+		
+
+</script>
+</html>
