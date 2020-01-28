@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -102,7 +101,11 @@
 <body id="page-top">
  
 	<!-- Topbar -->
-	<div id="topBar"></div>
+	<div id="app">
+		<component :is="topbar"></component>
+	
+<!-- 	<div id="topBar"></div> -->
+
 	<!-- End of Topbar -->
 	
 	<!-- Begin Page Content -->
@@ -222,10 +225,13 @@
   </div>
   
 	<!-- Footer -->        
-	<div id="footer"></div>
+	<component :is="footer"></component>
 	<!-- End of Footer -->
-	
-	
+	</div>
+</body>
+
+  	<!-- vue scripts -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -238,6 +244,13 @@
 	
   	<!-- CodeBlue scripts -->
   	<script src="js/codeBlueUser.js"></script>
-
-</body>
+  	<script>
+  	var app = new Vue({
+  		el : "#app",
+  		data : {
+  			topbar : TopBar,
+  			footer : Footer,
+  		}
+  	})
+  	</script>
 </html>

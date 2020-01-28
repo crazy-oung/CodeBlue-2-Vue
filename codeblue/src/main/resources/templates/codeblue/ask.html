@@ -25,14 +25,15 @@
 <link href="css/codeBlue.css" rel="stylesheet">
 
 
-
 </head>
 
 <body id="page-top" style="background: #ebebeb;" >
  		
+ <div id="app">
 	<!-- Topbar -->
-	<div id="topBar"></div>
+	<component :is="topbar"></component>
 	<!-- End of Topbar -->
+
 		
 		<div class='content pb-4'>
 		<!-- Begin Page Content -->
@@ -96,9 +97,11 @@
   </div>
   
 	<!-- Footer -->        
-	<div id="footer"></div>
+	<component :is="footer"></component>
 	<!-- End of Footer -->
-
+ </div>
+	<!-- vue scripts -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -116,7 +119,15 @@
 	
   	<!-- CodeBlue scripts -->
   	<script src="js/codeBlueUser.js"></script>
-	
+	<script>
+	var app = new Vue({
+		el : "#app",
+		data : {
+			topbar : TopBar,
+			footer : Footer,
+		}
+	})
+	</script>	
 </body>
 <script>
 

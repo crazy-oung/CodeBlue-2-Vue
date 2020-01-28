@@ -35,7 +35,7 @@
 }
 
 #contents {
-	min-height: 100% !important; 
+	min-height: 100vh !important; 
 }
 
 html, body {

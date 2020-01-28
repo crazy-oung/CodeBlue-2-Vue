@@ -23,9 +23,9 @@
 </head>
 
 <body id="page-top" >
- 
+ <div id="app">
 	<!-- Topbar -->
-	<div id="topBar"></div>
+	<component :is="topbar"></component>
 	<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
@@ -33,11 +33,13 @@
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;">
+					<component :is="leftSideBar"></component>
+				</div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="col-sm-8" id="contents">
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
 						<h1 class="text-gray-800 font-weight-bold h2 px-2 mb-1">QnA</h1>
@@ -58,7 +60,7 @@
 				
 				<!-- Page rigth side bar -->
 				<div class="col-sm-3 pt-5 mt-5">
-					<div id="rightSideBar"></div>
+					<component :is="rightSideBar"></component>
 				</div> <!-- rigth side bar end -->
 				
 			</div>
@@ -90,22 +92,23 @@
   </div>
   
 	<!-- Footer -->        
-	<div id="footer"></div>
+	<component :is="footer"></component>
 	<!-- End of Footer -->
-
-
-	<!-- Bootstrap core JavaScript-->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="js/sb-admin-2.min.js"></script>
-
-  	<!-- CodeBlue scripts -->
-  	<script src="js/codeBlueUser.js"></script>
-  	
+ </div>
 </body>
+<!-- vue scripts -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+<!-- CodeBlue scripts -->
+<script src="js/codeBlueUser.js"></script>
 </html>
