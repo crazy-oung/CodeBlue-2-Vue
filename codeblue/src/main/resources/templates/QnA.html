@@ -46,10 +46,37 @@
 						<a href="/ask" class="d-sm-inline-block btn btn-sm btn-primary shadow-lg"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a>
 					</div>
 					<!-- page Heading End -->
-					<div class="card bg-gray-100 my-3 p-2"><ul class="nav" id="feilds"></ul></div>
+					<div class="card bg-gray-100 my-3 p-2">
+						<ul class="nav"> 
+							<li v-for="item in feild" class='nav-item'>
+								<a v-if="feildId === item.feildId" class='p-1 mr-1 hov-p text-primary btn font-weight-bold text-lg' :href='"/QnA?feildId="+item.feildId'>{{item.feildName}}</a>
+								<a v-else class='p-1 mr-1 hov-p text-primary btn' :href='"/QnA?feildId="+item.feildId'>{{item.feildName}}</a>
+							</li>
+						</ul>
+					</div>
 					
 					<p class="text-right"><a id="thisResult" class="font-weight-bold" href="/QnA">전체보기</a></p>
-					<table id="questionBoard" class="table table-hover"></table>
+					<!-- <table id="questionBoard" class="table table-hover">
+						<tr v-for="item in question">
+						<td width='9%' class='px-1'>
+							<div class='text-center pt-1'>{{item.voteCount}}<br>
+							<small class='my-1'>추천</small>
+							</div>
+						</td>
+						<td width='11%' class='px-1'>
+							<div class='card border-success text-center pt-1'>{{item.answerCount}}<br>
+							<small class='text-success my-1'>답변</small>
+							</div>
+						</td>
+						<td>
+							<a class='nav-link' href='/questionBoardOne?questionId=item.questionId+'>{{item.questionTitle}}</a>
+							<div class='d-flex justify-content-between'>
+								<a v-for="tags in item.tag" class="text-primary mx-1 p-0 px-1 btn btn-sm btn-light alert-primary" href="#">#{{tags[i]}}</a>
+								<small class='p-2'>uploaded at{{ item.questionDatetime }} by <a href='/userOne?userId=item.user.userId'>{{ item.user.userName }}</small>
+							</div> 
+						</td>
+						</tr>
+					</table> -->
 					<br>
 					
 					<p>
