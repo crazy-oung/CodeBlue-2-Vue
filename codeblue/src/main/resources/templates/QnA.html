@@ -56,8 +56,8 @@
 					</div>
 					
 					<p class="text-right"><a id="thisResult" class="font-weight-bold" href="/QnA">전체보기</a></p>
-					<!-- <table id="questionBoard" class="table table-hover">
-						<tr v-for="item in question">
+					<table id="questionBoard" class="table table-hover">
+						<tr v-for="item in question.list">
 						<td width='9%' class='px-1'>
 							<div class='text-center pt-1'>{{item.voteCount}}<br>
 							<small class='my-1'>추천</small>
@@ -71,14 +71,13 @@
 						<td>
 							<a class='nav-link' href='/questionBoardOne?questionId=item.questionId+'>{{item.questionTitle}}</a>
 							<div class='d-flex justify-content-between'>
-								<a v-for="tags in item.tag" class="text-primary mx-1 p-0 px-1 btn btn-sm btn-light alert-primary" href="#">#{{tags[i]}}</a>
-								<small class='p-2'>uploaded at{{ item.questionDatetime }} by <a href='/userOne?userId=item.user.userId'>{{ item.user.userName }}</small>
+								<a v-for="tags in item.tag" class="text-primary mx-1 p-0 px-1 btn btn-sm btn-light alert-primary" href="#">#{{ tags }}</a>
+								<small class='p-2'>uploaded at {{ item.questionDatetime }} by <a href='/userOne?userId=item.user.userId'>{{ item.user.userName }}</small>
 							</div> 
 						</td>
 						</tr>
-					</table> -->
+					</table>
 					<br>
-					
 					<p>
 						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
 						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
@@ -87,7 +86,7 @@
 				
 				<!-- Page rigth side bar -->
 				<div class="col-sm-3 pt-5 mt-5">
-					<component :is="rightSideBar"></component>
+					<component :is="rightSideBar" :notice="notice" :faq="faq"></component>
 				</div> <!-- rigth side bar end -->
 				
 			</div>
@@ -121,6 +120,7 @@
 	<!-- Footer -->        
 	<component :is="footer"></component>
 	<!-- End of Footer -->
+	
  </div>
 </body>
 <!-- vue scripts -->
